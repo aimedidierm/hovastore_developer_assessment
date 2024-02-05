@@ -131,12 +131,14 @@ The following technologies, frameworks, and tools were used in the development o
 These technologies, frameworks, and tools collectively contributed to the development and successful implementation of the Flutter project.
 
 ## Screenshots
-
 ###Desktop / Tablet
-
+![desk1](https://github.com/aimedidierm/hovastore_developer_assessment/assets/73910734/99f011b2-2c83-44ff-b2ca-59f349cd0a2a)
+![desk2](https://github.com/aimedidierm/hovastore_developer_assessment/assets/73910734/56074dd5-bc51-4a84-838f-2bd1e8938776)
 
 ###Mobile
-
+![Screenshot_20240205-235409](https://github.com/aimedidierm/hovastore_developer_assessment/assets/73910734/02cd496d-89d8-48fd-bd2d-ee41feaf359d)
+![Screenshot_20240205-235416](https://github.com/aimedidierm/hovastore_developer_assessment/assets/73910734/4c6a0e18-d5a0-425b-8d68-58384bfab553)
+![Screenshot_20240205-235423](https://github.com/aimedidierm/hovastore_developer_assessment/assets/73910734/1c971136-3575-4920-80ce-1fc005b91aff)
 
 ## License
 
