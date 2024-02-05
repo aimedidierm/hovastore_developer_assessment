@@ -10,7 +10,7 @@ class Listing extends StatefulWidget {
 
 class _ListingState extends State<Listing> {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  TextEditingController InputQuantity = TextEditingController();
+  TextEditingController inputQuantity = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -1607,7 +1607,7 @@ class _ListingState extends State<Listing> {
                                 'Laptop Charger',
                                 '111',
                                 '1000',
-                                1,
+                                '1',
                               );
                             },
                             child: Container(
@@ -1650,7 +1650,6 @@ class _ListingState extends State<Listing> {
     price,
     id,
   ) {
-    int parsedQuantity = int.tryParse(quantity) ?? 0;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -1665,7 +1664,7 @@ class _ListingState extends State<Listing> {
           content: Form(
             key: formkey,
             child: TextFormField(
-              controller: InputQuantity,
+              controller: inputQuantity,
               validator: (val) {
                 if (val == null || val.isEmpty) {
                   return 'Quantity is required';
@@ -1674,8 +1673,8 @@ class _ListingState extends State<Listing> {
                 if (numericValue == null) {
                   return 'Please enter a valid number';
                 }
-                if (numericValue >= parsedQuantity) {
-                  return 'Quantity must be less than $quantity';
+                if (numericValue >= 111) {
+                  return 'Quantity must be less than 111';
                 }
                 return null;
               },
@@ -1703,7 +1702,7 @@ class _ListingState extends State<Listing> {
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() {
-                  InputQuantity.text = '';
+                  inputQuantity.text = '';
                 });
               },
             ),
@@ -1718,15 +1717,10 @@ class _ListingState extends State<Listing> {
               ),
               onPressed: () {
                 if (formkey.currentState!.validate()) {
-                  // setState(() {
-                  //   productNames = productName;
-                  //   productQuantity =
-                  //       (parsedQuantity - quantity.text) as String;
-                  //   productPrice = price;
-                  //   productId = id;
-                  // });
-                  // updateProductDetails();
-                  // addProductToCard();
+                  Navigator.of(context).pop();
+                  setState(() {
+                    inputQuantity.text = '';
+                  });
                 }
               },
             ),

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hovastore/constants.dart';
-import 'package:hovastore/models/api_response.dart';
 import 'package:hovastore/screens/mobile/confirm_transaction.dart';
 import 'package:hovastore/theme/theme.dart';
 import 'package:http/http.dart' as http;
@@ -17,14 +16,10 @@ class MobileHome extends StatefulWidget {
 class _MobileHomeState extends State<MobileHome> {
   int _currentIndex = 0;
   bool _loading = true;
-  String productNames = '';
-  String productQuantity = '';
-  String productPrice = '';
-  String productId = '';
   List<Map<String, dynamic>> _allProducts = [];
   List<Map<String, dynamic>> _allCardsProducts = [];
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  TextEditingController InputQuantity = TextEditingController();
+  TextEditingController inputQuantity = TextEditingController();
 
   @override
   void initState() {
@@ -63,57 +58,6 @@ class _MobileHomeState extends State<MobileHome> {
     } else {
       // print('Request failed with status: ${response.statusCode}.');
     }
-  }
-
-  void updateProductDetails() async {
-    ApiResponse response = await updateProductDetailsEndPoint(
-      productNames,
-      InputQuantity.text,
-      productPrice,
-      productId,
-    );
-    if (response.error == null) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const ConfirmTransaction(),
-          ),
-          (route) => false);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${response.error}'),
-        ),
-      );
-    }
-  }
-
-  Future<ApiResponse> updateProductDetailsEndPoint(
-    String name,
-    String amount,
-    String price,
-    String id,
-  ) async {
-    ApiResponse apiResponse = ApiResponse();
-    try {
-      final response = await http.put(Uri.parse('$cardURL/$id'), headers: {
-        'Accept': 'application/json'
-      }, body: {
-        "name": name,
-        "amount": amount,
-        "price": price,
-        "status": "added",
-      });
-
-      switch (response.statusCode) {
-        case 200:
-        default:
-          apiResponse.error = 'somethingWentWrong';
-          break;
-      }
-    } catch (e) {
-      apiResponse.error = 'serverError';
-    }
-    return apiResponse;
   }
 
   @override
@@ -328,17 +272,15 @@ class _MobileHomeState extends State<MobileHome> {
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
                                                 border: Border.all(
-                                                  color: int.parse(_allProducts[
-                                                                  index]
-                                                              ['amount']) ==
+                                                  color: _allProducts[index]
+                                                              ['amount'] ==
                                                           0
                                                       ? lowColor
-                                                      : (int.parse(_allProducts[
-                                                                      index]
-                                                                  ['amount']) <=
+                                                      : _allProducts[index]
+                                                                  ['amount'] <=
                                                               4
                                                           ? mediumColor
-                                                          : highColor),
+                                                          : highColor,
                                                 ),
                                                 borderRadius:
                                                     BorderRadius.circular(
@@ -347,17 +289,15 @@ class _MobileHomeState extends State<MobileHome> {
                                               ),
                                               child: Center(
                                                 child: Text(
-                                                  _allProducts[index]['amount'],
+                                                  _allProducts[index]['amount']
+                                                      .toString(),
                                                   style: TextStyle(
-                                                    color: int.parse(
-                                                                _allProducts[
-                                                                        index][
-                                                                    'amount']) ==
+                                                    color: _allProducts[index]
+                                                                ['amount'] ==
                                                             0
                                                         ? lowColor
-                                                        : (int.parse(_allProducts[
-                                                                        index][
-                                                                    'amount']) <=
+                                                        : (_allProducts[index][
+                                                                    'amount'] <=
                                                                 4
                                                             ? mediumColor
                                                             : highColor),
@@ -371,7 +311,8 @@ class _MobileHomeState extends State<MobileHome> {
                                               width: 15,
                                             ),
                                             Text(
-                                              _allProducts[index]['name'],
+                                              _allProducts[index]['name']
+                                                  .toString(),
                                               textAlign: TextAlign.justify,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
@@ -459,7 +400,8 @@ class _MobileHomeState extends State<MobileHome> {
                                               ),
                                             ),
                                             Text(
-                                              _allProducts[index]['price'],
+                                              _allProducts[index]['price']
+                                                  .toString(),
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -579,7 +521,6 @@ class _MobileHomeState extends State<MobileHome> {
     price,
     id,
   ) {
-    int parsedQuantity = int.tryParse(quantity) ?? 0;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -594,7 +535,7 @@ class _MobileHomeState extends State<MobileHome> {
           content: Form(
             key: formkey,
             child: TextFormField(
-              controller: InputQuantity,
+              controller: inputQuantity,
               validator: (val) {
                 if (val == null || val.isEmpty) {
                   return 'Quantity is required';
@@ -603,7 +544,7 @@ class _MobileHomeState extends State<MobileHome> {
                 if (numericValue == null) {
                   return 'Please enter a valid number';
                 }
-                if (numericValue >= parsedQuantity) {
+                if (numericValue >= quantity) {
                   return 'Quantity must be less than $quantity';
                 }
                 return null;
@@ -632,7 +573,7 @@ class _MobileHomeState extends State<MobileHome> {
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() {
-                  InputQuantity.text = '';
+                  inputQuantity.text = '';
                 });
               },
             ),
@@ -647,15 +588,10 @@ class _MobileHomeState extends State<MobileHome> {
               ),
               onPressed: () {
                 if (formkey.currentState!.validate()) {
-                  // setState(() {
-                  //   productNames = productName;
-                  //   productQuantity =
-                  //       (parsedQuantity - quantity.text) as String;
-                  //   productPrice = price;
-                  //   productId = id;
-                  // });
-                  // updateProductDetails();
-                  // addProductToCard();
+                  Navigator.of(context).pop();
+                  setState(() {
+                    inputQuantity.text = '';
+                  });
                 }
               },
             ),
