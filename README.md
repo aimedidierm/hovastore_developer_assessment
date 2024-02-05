@@ -15,6 +15,7 @@ My challenge was to implement a single responsive screen based on the provided U
 ## Project Structure
 
 The Flutter project follows a simple directory structure:
+```sh
 project_root/
 │
 ├── lib/
@@ -36,6 +37,7 @@ project_root/
 │ └── widget_test.dart
 ├── pubspec.yaml
 └── README.md
+```
 
 - `lib/`: This directory contains all the Dart source code for the project.
   - `main.dart`: Entry point of the Flutter application.
@@ -130,7 +132,11 @@ These technologies, frameworks, and tools collectively contributed to the develo
 
 ## Screenshots
 
-If applicable, include screenshots of the implemented screen on different devices.
+###Desktop / Tablet
+
+
+###Mobile
+
 
 ## License
 
